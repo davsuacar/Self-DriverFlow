@@ -53,7 +53,7 @@ def get_test_batch(batch_size):
     x_out = []
     y_out = []
     for i in range(0, batch_size):
-        x_out.append(np.array(scipy.misc.imresize(scipy.misc.imread(X_train[(INDEX_TRAIN_BATH + i) % num_train_images])[-150:], [64, 224, 3]) / 255.0)[:,:,:3])
-        y_out.append([Y_test[(INDEX_TRAIN_BATH + i) % num_train_images]])
+        x_out.append(np.array(scipy.misc.imresize(scipy.misc.imread(X_test[(INDEX_TEST_BATH + i) % num_test_images])[-150:], [64, 224, 3]) / 255.0)[:,:,:3])
+        y_out.append([Y_test[(INDEX_TEST_BATH + i) % num_test_images]])
     INDEX_TEST_BATH += batch_size
     return x_out, y_out
