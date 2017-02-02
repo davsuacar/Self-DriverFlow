@@ -1,4 +1,5 @@
 
+
 # coding: utf-8
 
 # In[7]:
@@ -121,12 +122,10 @@ cmd_vel = rospy.Publisher('cmd_vel_mux/input/navi', Twist, queue_size=10)
 #TurtleBot will stop if we don't keep telling it to move.  How often should we tell it to move? 10 HZ
 r = rospy.Rate(10);
 
-for i in range(10):
+for i in range(3):
     
     # Capture frame-by-frame
     ret, frame = video_capture.read()
-    print frame
-    
     image = np.array(scipy.misc.imresize(frame, [64, 224, 4]) / 255.0)[:,:,:3]
 
     predict = y_softmax.eval(feed_dict={x_image: [image], pkeep: 0.8})
@@ -134,14 +133,12 @@ for i in range(10):
     # Twist is a datatype for velocity
     move_cmd = Twist()
     # let's go forward at 0.2 m/s
-    move_cmd.linear.x = 0.1
+    move_cmd.linear.x = 0.01
     # let's turn at 0 radians/s
-    move_cmd.angular.z = 5
+    move_cmd.angular.z = predict
 
     cmd_vel.publish(move_cmd)
-    
-    print predict
-    
+    print predict    
 video_capture.release()
 
 
