@@ -36,7 +36,7 @@ Y_test = Y_train[:LIMIT]
 Y_train = Y_train[LIMIT:]
 
 num_train_images = len(X_train)
-num_test_images = len(Y_train)
+num_test_images = len(X_test)
 
 def get_train_batch(batch_size):
     global INDEX_TRAIN_BATH
