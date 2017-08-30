@@ -8,7 +8,6 @@ import tensorflow as tf
 import pandas as pd
 import numpy as np
 import cv2
-import dlib
 import scipy.misc
 import scipy.ndimage
 import rospy
