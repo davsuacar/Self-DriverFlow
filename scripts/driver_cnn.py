@@ -3,8 +3,6 @@
 
 
 import tensorflow as tf
-import pandas as pd
-import numpy as np
 
 ## IMPORT FROM DATASET
 import load_image_batch as driving_data
@@ -42,7 +40,7 @@ x_image = tf.placeholder(tf.float32, shape=[None, 64, 224, 3])
 y = tf.placeholder(tf.float32, shape=[None, OUTPUTS])
 pkeep = tf.placeholder(tf.float32)
 
-print x_image.get_shape()
+
 # First Convolutional Layer
 W_conv_1 = tf.Variable(tf.truncated_normal([2, 2, 3, 64], stddev=0.1))
 b_conv_1 = tf.Variable(tf.constant(0.0, shape=[64]))
@@ -99,7 +97,7 @@ loss = tf.sqrt(tf.reduce_mean(tf.square(y - y_softmax)), name='RMSE')
 optimizer = tf.train.AdamOptimizer(LEARNING_RATE)
 train_step = optimizer.minimize(loss)
 
-correct_prediction = tf.sub(tf.cast(1, 'float'), tf.reduce_mean(tf.sub(y_softmax, y)))
+correct_prediction = tf.subtract(tf.cast(1, 'float'), tf.reduce_mean(tf.subtract(y_softmax, y)))
 accuracy = tf.cast(correct_prediction, "float")
 
 init = tf.initialize_all_variables()
@@ -119,7 +117,7 @@ for current_epoch in range(NUM_EPOCHS):
     
     test_dataset, test_labels = driving_data.get_test_batch(BATCH_SIZE)
 
-    for step in xrange(int(NUM_IMAGES / BATCH_SIZE)):
+    for step in range(int(NUM_IMAGES / BATCH_SIZE)):
         
         train_dataset, train_labels = driving_data.get_train_batch(BATCH_SIZE)
         

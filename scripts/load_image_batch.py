@@ -3,23 +3,23 @@
 
 import scipy.misc
 from sklearn.utils import shuffle
-import matplotlib.pyplot as plt
 import numpy as np
 
 
 INDEX_TRAIN_BATH = 0
 INDEX_TEST_BATH = 0
-DATASET_FOLDER_PATH = '../driving_dataset_to_robot/images.txt'
-IMAGES_FOLDER_PATH = '../driving_dataset_to_robot/'
+DATASET_FOLDER_PATH = '../images/dataset.csv'
+IMAGES_FOLDER_PATH = '../images/images/'
 
 df_data = []
 df_label = []
 
 with open(DATASET_FOLDER_PATH, 'r') as file:
-        
+    i = 0
     for line in file:
-        df_data.append(IMAGES_FOLDER_PATH + line.split(" ")[0].strip() + '.png')
-        df_label.append(line.split(" ")[1].strip())
+        df_data.append(IMAGES_FOLDER_PATH + "image_" + str(i) + '.png')
+        df_label.append(line)
+        i += 1
 
 # Inputs
 LIMIT = 1000
@@ -38,6 +38,7 @@ Y_train = Y_train[LIMIT:]
 num_train_images = len(X_train)
 num_test_images = len(X_test)
 
+
 def get_train_batch(batch_size):
     global INDEX_TRAIN_BATH
     x_out = []
@@ -47,6 +48,7 @@ def get_train_batch(batch_size):
         y_out.append([Y_train[(INDEX_TRAIN_BATH + i) % num_train_images]])
     INDEX_TRAIN_BATH += batch_size
     return x_out, y_out
+
 
 def get_test_batch(batch_size):
     global INDEX_TEST_BATH
