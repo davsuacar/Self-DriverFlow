@@ -3,6 +3,7 @@
 
 
 import tensorflow as tf
+import time
 
 ## IMPORT FROM DATASET
 import load_image_batch as driving_data
@@ -21,10 +22,10 @@ def max_pool_2x2(x):
 
 INPUTS = 60 * 200 * 3
 OUTPUTS = 1
-BATCH_SIZE = 30
+BATCH_SIZE = 20
 NUM_EPOCHS = 50
 LEARNING_RATE = 1e-04
-NUM_IMAGES = 42000
+NUM_IMAGES = 1327
 
 
 try:
@@ -91,23 +92,20 @@ h_drop = tf.nn.dropout(h_fc2, pkeep)
 W_fc3 = tf.Variable(tf.truncated_normal([256, OUTPUTS], stddev=0.1))
 b_fc3 = tf.Variable(tf.constant(0.0, shape=[OUTPUTS]))
 y_logits = tf.matmul(h_drop, W_fc3) + b_fc3
-y_softmax = tf.nn.softmax(y_logits)
 
-loss = tf.sqrt(tf.reduce_mean(tf.square(y - y_softmax)), name='RMSE')
+loss = tf.sqrt(tf.reduce_mean(tf.square(y - y_logits)), name='RMSE')
 optimizer = tf.train.AdamOptimizer(LEARNING_RATE)
 train_step = optimizer.minimize(loss)
 
-correct_prediction = tf.subtract(tf.cast(1, 'float'), tf.reduce_mean(tf.subtract(y_softmax, y)))
-accuracy = tf.cast(correct_prediction, "float")
+mse = tf.reduce_mean(tf.square(y_logits - y))
 
-init = tf.initialize_all_variables()
+init = tf.global_variables_initializer()
 
 # op to write model to Tensorboard
 save_path = './model/'
 saver = tf.train.Saver()
 
 sess.run(init)
-
 
 loss_train_array = []
 test_accuracy_array = []
@@ -117,8 +115,10 @@ for current_epoch in range(NUM_EPOCHS):
     
     test_dataset, test_labels = driving_data.get_test_batch(BATCH_SIZE)
 
+    start = time.time()
+
     for step in range(int(NUM_IMAGES / BATCH_SIZE)):
-        
+
         train_dataset, train_labels = driving_data.get_train_batch(BATCH_SIZE)
         
         # This dictionary maps the batch data (as a numpy array) to the
@@ -127,17 +127,27 @@ for current_epoch in range(NUM_EPOCHS):
         _, loss_train = sess.run([train_step, loss],
                                  feed_dict=feed_dict)
 
+        print("--- %s seconds ---" % (time.time() - start))
+
+    print("Predictions: ")
+    print("-------LABEL------:")
+    print(test_labels)
+    predictions = sess.run(
+        y_logits, feed_dict={x_image: test_dataset, pkeep: 1.0})
+    print("-------PREDICTIONS-------:")
+    print(predictions)
+
     # We calculate the accuracies to plot their values later
     loss_train_array.append(loss_train)
-    
+
     train_accuracy = sess.run(
-        accuracy, feed_dict={x_image: train_dataset, y: train_labels, pkeep: 1.0})
-    
+        mse, feed_dict={x_image: train_dataset, y: train_labels, pkeep: 1.0})
+
     train_accuracy_array.append(train_accuracy)
-    
+
     test_accuracy = sess.run(
-        accuracy, feed_dict={x_image: test_dataset, y: test_labels, pkeep: 1.0})
-    
+        mse, feed_dict={x_image: test_dataset, y: test_labels, pkeep: 1.0})
+
     test_accuracy_array.append(test_accuracy)
 
     print (

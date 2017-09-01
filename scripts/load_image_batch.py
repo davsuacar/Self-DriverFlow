@@ -41,9 +41,13 @@ num_test_images = len(X_test)
 
 def get_train_batch(batch_size):
     global INDEX_TRAIN_BATH
+
     x_out = []
     y_out = []
     for i in range(0, batch_size):
+        scipy.misc.imsave("images_resized/test" + str(i) + ".png", (
+            scipy.misc.imresize(scipy.misc.imread(X_train[(INDEX_TRAIN_BATH + i) % num_train_images]),
+                                [64, 224, 3]) / 255.0))
         x_out.append(np.array(scipy.misc.imresize(scipy.misc.imread(X_train[(INDEX_TRAIN_BATH + i) % num_train_images])[-150:], [64, 224, 3]) / 255.0)[:,:,:3])
         y_out.append([Y_train[(INDEX_TRAIN_BATH + i) % num_train_images]])
     INDEX_TRAIN_BATH += batch_size
