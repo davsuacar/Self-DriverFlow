@@ -115,9 +115,9 @@ for current_epoch in range(NUM_EPOCHS):
     
     test_dataset, test_labels = driving_data.get_test_batch(BATCH_SIZE)
 
-    start = time.time()
-
     for step in range(int(NUM_IMAGES / BATCH_SIZE)):
+
+        start = time.time()
 
         train_dataset, train_labels = driving_data.get_train_batch(BATCH_SIZE)
         

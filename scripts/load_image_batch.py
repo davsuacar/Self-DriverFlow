@@ -27,13 +27,13 @@ LIMIT = 1000
 df_data, df_label = shuffle(df_data, df_label, random_state=22)
 
 X_train = df_data
-X_test = X_train[:LIMIT]
-X_train = X_train[LIMIT:]
+X_test = X_train[LIMIT:]
+X_train = X_train[:LIMIT]
 
 # Outputs
 Y_train = df_label
-Y_test = Y_train[:LIMIT]
-Y_train = Y_train[LIMIT:]
+Y_test = Y_train[LIMIT:]
+Y_train = Y_train[:LIMIT]
 
 num_train_images = len(X_train)
 num_test_images = len(X_test)
