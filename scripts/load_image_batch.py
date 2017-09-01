@@ -18,13 +18,16 @@ with open(DATASET_FOLDER_PATH, 'r') as file:
     i = 0
     for line in file:
         df_data.append(IMAGES_FOLDER_PATH + "image_" + str(i) + '.png')
-        df_label.append(line)
+        df_label.append(float(line[:-2]))
         i += 1
 
 # Inputs
 LIMIT = 1000
 
 df_data, df_label = shuffle(df_data, df_label, random_state=22)
+df_label = np.array(df_label, dtype=float)
+df_label = df_label * 100
+df_label = df_label.tolist()
 
 X_train = df_data
 X_test = X_train[LIMIT:]
