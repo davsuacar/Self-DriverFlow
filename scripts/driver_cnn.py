@@ -20,7 +20,6 @@ def max_pool_2x2(x):
 
 # Input and output variables
 
-INPUTS = 60 * 200 * 3
 OUTPUTS = 1
 BATCH_SIZE = 20
 NUM_EPOCHS = 50
@@ -37,13 +36,13 @@ sess = tf.InteractiveSession()
 
 
 # Input and output placeholder
-x_image = tf.placeholder(tf.float32, shape=[None, 64, 224, 3])
+x_image = tf.placeholder(tf.float32, shape=[None, 64, 224, 1])
 y = tf.placeholder(tf.float32, shape=[None, OUTPUTS])
 pkeep = tf.placeholder(tf.float32)
 
 
 # First Convolutional Layer
-W_conv_1 = tf.Variable(tf.truncated_normal([2, 2, 3, 64], stddev=0.1))
+W_conv_1 = tf.Variable(tf.truncated_normal([2, 2, 1, 64], stddev=0.1))
 b_conv_1 = tf.Variable(tf.constant(0.0, shape=[64]))
 h_conv_1 = tf.nn.relu(conv2d(x_image, W_conv_1) + b_conv_1)
 h_pool_1 = max_pool_2x2(h_conv_1)
@@ -114,10 +113,11 @@ train_accuracy_array = []
 for current_epoch in range(NUM_EPOCHS):
     
     test_dataset, test_labels = driving_data.get_test_batch(BATCH_SIZE)
+    start = time.time()
 
     for step in range(int(NUM_IMAGES / BATCH_SIZE)):
 
-        start = time.time()
+
 
         train_dataset, train_labels = driving_data.get_train_batch(BATCH_SIZE)
         
@@ -127,7 +127,7 @@ for current_epoch in range(NUM_EPOCHS):
         _, loss_train = sess.run([train_step, loss],
                                  feed_dict=feed_dict)
 
-        print("--- %s seconds ---" % (time.time() - start))
+    print("--- %s seconds/epoch---" % (time.time() - start))
 
     print("Predictions: ")
     print("-------LABEL------:")
