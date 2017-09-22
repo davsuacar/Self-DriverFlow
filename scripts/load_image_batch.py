@@ -80,7 +80,7 @@ def get_train_batch(batch_size):
     x_out = []
     y_out = []
     for i in range(0, batch_size):
-        image = scipy.misc.imread(X_train[(INDEX_TRAIN_BATH + i) % num_train_images])[-100:]
+        image = scipy.misc.imread(X_train[(INDEX_TRAIN_BATH + i) % num_train_images])
         image = process_image(image, KERNEL_SIZE, LOW_THRESHOLD, HIGH_THRESHOLD)
         scipy.misc.imsave("images_resized/test" + str(i) + ".png", (scipy.misc.imresize(image, [64, 224]) / 255.0))
         x_out.append(np.array(scipy.misc.imresize(image, [64, 224]) / 255.0).reshape(64, 224, 1))
@@ -94,7 +94,7 @@ def get_test_batch(batch_size):
     x_out = []
     y_out = []
     for i in range(0, batch_size):
-        image = scipy.misc.imread(X_test[(INDEX_TEST_BATH + i) % num_train_images])[-100:]
+        image = scipy.misc.imread(X_test[(INDEX_TEST_BATH + i) % num_test_images])
         image = process_image(image, KERNEL_SIZE, LOW_THRESHOLD, HIGH_THRESHOLD)
         x_out.append(np.array(scipy.misc.imresize(image, [64, 224]) / 255.0).reshape(64, 224, 1))
         y_out.append(Y_test[(INDEX_TEST_BATH + i) % num_test_images])
