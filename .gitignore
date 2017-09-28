@@ -5,3 +5,4 @@ __pycache__
 images_resized
 *pyc
 .ipynb_checkpoints
+model
