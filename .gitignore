@@ -1,2 +1,7 @@
 images/
 .idea
+.DS_Store
+__pycache__
+images_resized
+*pyc
+.ipynb_checkpoints
