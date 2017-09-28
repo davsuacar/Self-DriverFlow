@@ -38,7 +38,7 @@ def gaussian_blur(img, kernel_size):
     return cv2.GaussianBlur(img, (kernel_size, kernel_size), 20)
 
 
-def process_image(img, kernel_size=5, low_threshold=50, high_threshold=150):
+def process_image(img, kernel_size=3, low_threshold=50, high_threshold=150):
     img_gray = grayscale(img)
     img_gaussian = gaussian_blur(img_gray, kernel_size)
     edges = canny(img_gaussian, low_threshold, high_threshold)
