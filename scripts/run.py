@@ -3,8 +3,9 @@ import numpy as np
 import cv2
 import scipy.ndimage
 import rospy
+from geometry_msgs.msg import Twist
 
-from load_image_batch import process_image
+from image_preprocess import process_image
 
 def shutdown(self):
     # stop turtlebot
@@ -97,9 +98,8 @@ correct_prediction = tf.equal(tf.argmax(y_softmax, 1), tf.argmax(y, 1))
 init = tf.global_variables_initializer()
 
 # op to write model to Tensorboard
-save_path = '../model/'
 saver = tf.train.Saver()
-saver.restore(sess, save_path + "model.ckpt")
+saver.restore(sess, "./model/model.ckpt")
 
 video_capture = cv2.VideoCapture(0)
 
@@ -110,7 +110,7 @@ rospy.init_node('GoForward', anonymous=False)
 rospy.loginfo("To stop TurtleBot CTRL + C")
 
 # What function to call when you ctrl + c
-rospy.on_shutdown(shutdown)
+#rospy.on_shutdown(shutdown)
 
 # Create a publisher which can "talk" to TurtleBot and tell it to move
 # Tip: You may need to change cmd_vel_mux/input/navi to /cmd_vel if you're not using TurtleBot2
