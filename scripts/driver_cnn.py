@@ -104,7 +104,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 init = tf.global_variables_initializer()
 
 # op to write model to Tensorboard
-save_path = './model/'
+save_path = '../model/'
 saver = tf.train.Saver()
 
 sess.run(init)
@@ -160,7 +160,7 @@ for current_epoch in range(NUM_EPOCHS):
          train_accuracy,
          test_accuracy))
 
-filename = saver.save(sess, 'model/model.ckpt')
+filename = saver.save(sess, save_path + 'model.ckpt')
 print("Model saved in file: %s" % filename)
 
 
