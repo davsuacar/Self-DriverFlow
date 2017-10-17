@@ -15,7 +15,7 @@ def callback(data):
 	with open('dataset.csv', 'a') as csvfile:
 	    spamwriter = csv.writer(csvfile, delimiter=' ',
 		                    quotechar='|', quoting=csv.QUOTE_MINIMAL)
-	    spamwriter.writerow([data.linear.z])
+	    spamwriter.writerow([data.angular.z])
 
 	    if vc.isOpened(): # try to get the first frame
 	        rval, frame = vc.read()
